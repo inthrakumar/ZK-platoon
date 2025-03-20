@@ -24,7 +24,7 @@ fn main(vehicles: pub [str<1>; 6], Vehicle_Response: [(str<1>, str<1>); 6], vehi
         numerical_vehicle_response[i][1] = find_index(Vehicle_Response[i].1, vehicles);
     }
 
-    let (max, element) = find_max_and_ele(numerical_vehicle_response, adj_matrix);
+    let (_, element) = find_max_and_ele(numerical_vehicle_response, adj_matrix);
 
     let mut isVisited = get_platoon(numerical_vehicle_response, adj_matrix, element);
     assert(isVisited[find_index(vehicle_name, vehicles)] == 1);
