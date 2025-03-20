@@ -117,10 +117,10 @@ fn find_max_and_ele(numerical_vehicle_response: [[i32; 2]; 6], adj_matrix: [[u8;
 fn find_index(vehicle: str<1>, vehicles: [str<1>; 6]) -> i32 {
     let mut index: i32 = -1;
     if vehicle == "0" {
-        -1
+        -1;
     }
     if vehicle == "1" {
-        -1
+        -1;
     }
     for i in 0..6 {
         if vehicles[i] == vehicle {
