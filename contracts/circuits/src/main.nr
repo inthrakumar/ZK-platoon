@@ -27,7 +27,7 @@ fn main(vehicles: pub [str<1>; 6], Vehicle_Response: [(str<1>, str<1>); 6], vehi
     let (_, element) = find_max_and_ele(numerical_vehicle_response, adj_matrix);
 
     let mut isVisited = get_platoon(numerical_vehicle_response, adj_matrix, element);
-    assert(isVisited[find_index(vehicle_name, vehicles)] == 1);
+    assert(isVisited[find_index(vehicle_name, vehicles)] == 1 , "Assertion failed: Vehicle not found in platoon");
 }
 
 fn get_platoon(numerical_vehicle_response: [[i32; 2]; 6], adj_matrix: [[u8; 6]; 6], element: i32) -> [u8; 6] {
@@ -184,3 +184,80 @@ fn test_main2() {
 
     main(vehicles, Vehicle_Response, vehicle_name);
 }
+
+#[test(should_fail_with = "Assertion failed: Vehicle not found in platoon")]
+fn test_main3() {
+    let vehicles: [str<1>; 6] = ["A", "B", "C", "D", "E", "F"];
+
+    let Vehicle_Response: [(str<1>, str<1>); 6] = [
+        ("0", "1"),
+        ("0", "C"),
+        ("B", "D"),
+        ("C", "E"),
+        ("D", "F"),
+        ("E", "1"),
+    ];
+
+    let vehicle_name: str<1> = "A";
+    main(vehicles, Vehicle_Response, vehicle_name);
+}
+
+
+#[test(should_fail_with = "Assertion failed: Vehicle not found in platoon")]
+fn test_main4(){
+let vehicles: [str<1>; 6] = ["A", "B", "C", "D", "E", "F"];
+
+    let Vehicle_Response: [(str<1>, str<1>); 6] = [
+        ("0", "B"),
+        ("A", "C"),
+        ("B", "F"),
+        ("C", "E"),
+        ("D", "F"),
+        ("C", "1"),
+    ];
+
+    let vehicle_name: str<1> = "D";
+
+    main(vehicles, Vehicle_Response, vehicle_name);
+
+}
+
+#[test(should_fail_with = "Assertion failed: Vehicle not found in platoon")]
+fn test_main5(){
+let vehicles: [str<1>; 6] = ["A", "B", "C", "D", "E", "F"];
+
+    let Vehicle_Response: [(str<1>, str<1>); 6] = [
+        ("0", "B"),
+        ("A", "C"),
+        ("B", "D"),
+        ("C", "E"),
+        ("D", "F"),
+        ("B", "1"),
+    ];
+
+    let vehicle_name: str<1> = "F";
+
+    main(vehicles, Vehicle_Response, vehicle_name);
+
+}
+
+#[test(should_fail_with = "Assertion failed: Vehicle not found in platoon")]
+fn test_main6(){
+let vehicles: [str<1>; 6] = ["A", "B", "C", "D", "E", "F"];
+
+    let Vehicle_Response: [(str<1>, str<1>); 6] = [
+        ("0", "B"),
+        ("A", "C"),
+        ("B", "D"),
+        ("C", "E"),
+        ("C", "F"),
+        ("E", "1"),
+    ];
+
+    let vehicle_name: str<1> = "E";
+
+    main(vehicles, Vehicle_Response, vehicle_name);
+
+}
+
+
