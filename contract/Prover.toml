@@ -1,0 +1,12 @@
+vehicles = ["A", "B", "C", "D", "E", "F"]
+
+Vehicle_Response = [
+    ["0", "B"],
+    ["A", "C"],
+    ["B", "F"],
+    ["C", "E"],
+    ["D", "F"],
+    ["C", "1"]
+]
+
+vehicle_name = "F"
