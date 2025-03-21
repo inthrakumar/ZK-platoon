@@ -110,7 +110,9 @@ export default function Terminal({
         return "Browser CLI v1.0.0 - A terminal emulator for the web";
       case "prove":
         const proof = await zk_platoon.generateProof();
-        return String(proof);
+        console.log("Proof:", proof.proof);
+        console.log("Public Inputs:", proof.publicInputs);
+        return `Proof: ${JSON.stringify(proof.proof)}\nPublic Inputs: ${JSON.stringify(proof.publicInputs)}`;        
       default:
         return `Command not found: ${cmd}. Type 'help' for available commands.`;
     }

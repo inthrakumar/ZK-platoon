@@ -41,8 +41,7 @@ export const zk_platoon = {
     const proof = await backend.generateProof(witness);
     const provingTime = performance.now() - startTime;
 
-    console.log(proof);
-    console.log(`Proof generated in ${provingTime}ms`);
+    return proof
   },
 };
 
