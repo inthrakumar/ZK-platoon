@@ -10,7 +10,7 @@ const Home = () => {
   const [faulty, setfaulty] = useState(false);
   const [count, setCount] = useState(0);
   return (
-      <div className="flex w-full h-screen items-center justify-center gap-10 flex-col">
+      <div className="flex w-full h-screen items-center justify-center gap-10 flex-col p-12">
         <div className="h-1/2">
           <h1>Truck Animation on Chart</h1>
           <TruckChart start={start} count={count} setCount={setCount} faulty={faulty} setfaulty={setfaulty} />
