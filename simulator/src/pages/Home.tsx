@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import TruckChart from "../components/Home/TruckSimulation";
 import Terminal from "../components/Home/Terminal";
+import { ThirdwebProvider, ConnectButton } from "thirdweb/react";
+import { client,contract } from "../config/thirdwebconfig";
+
 const Home = () => {
   const [start, setStart] = useState(false);
   const [faulty, setfaulty] = useState(false);
