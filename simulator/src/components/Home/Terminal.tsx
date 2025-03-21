@@ -1,6 +1,7 @@
 import type React from "react";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, JSX } from "react";
+import { zk_platoon } from "../../utils/zk_platoon";
 
 type CommandHistoryItem = {
   command: string;
@@ -66,12 +67,12 @@ export default function Terminal({
     setInput("");
   };
 
-  const processCommand = (command: string): string | JSX.Element => {
+  const processCommand = async (command: string): string | JSX.Element => {
     const [cmd, ...args] = command.split(" ");
 
     switch (cmd.toLowerCase()) {
       case "help":
-        return "Available commands: help, clear, echo, date, whoami, ls, about , setfaulty , start";
+        return "Available commands: help, clear, echo, date, whoami, ls, about, setfaulty, start, prove";
 
       case "clear":
         setTimeout(() => {
@@ -102,10 +103,11 @@ export default function Terminal({
         }
         setfaulty(true);
         return "Malicious Node has been set";
-
       case "about":
         return "Browser CLI v1.0.0 - A terminal emulator for the web";
-
+      case "prove":
+        const proof = await zk_platoon.generateProof();
+        return String(proof);
       default:
         return `Command not found: ${cmd}. Type 'help' for available commands.`;
     }

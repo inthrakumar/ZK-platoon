@@ -8,4 +8,12 @@ export default defineConfig({
     
   },
   plugins: [react()],
+  build: {
+    target: 'esnext'
+  },
+  esbuild: {
+    supported: {
+      'top-level-await': true
+    },
+  },
 })
