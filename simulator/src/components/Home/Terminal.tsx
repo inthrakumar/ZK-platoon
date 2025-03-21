@@ -5,18 +5,20 @@ import { zk_platoon } from "../../utils/zk_platoon";
 
 type CommandHistoryItem = {
   command: string;
-  output: string | JSX.Element;
+  output: string ;
 };
 
 export default function Terminal({
   start,
   setStart,
   setfaulty,
+  setCount,
   count,
 }: {
   count: number;
   setStart: (val: boolean) => void;
   setfaulty: (val: boolean) => void;
+  setCount :(val:number)=>void ;
   start:boolean
 }) {
   const [input, setInput] = useState("");
@@ -102,6 +104,7 @@ export default function Terminal({
           return "Simulation need to be started";
         }
         setfaulty(true);
+        
         return "Malicious Node has been set";
       case "about":
         return "Browser CLI v1.0.0 - A terminal emulator for the web";
