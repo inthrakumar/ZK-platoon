@@ -4,18 +4,20 @@ import { useState, useRef, useEffect } from "react";
 
 type CommandHistoryItem = {
   command: string;
-  output: string | JSX.Element;
+  output: string ;
 };
 
 export default function Terminal({
   start,
   setStart,
   setfaulty,
+  setCount,
   count,
 }: {
   count: number;
   setStart: (val: boolean) => void;
   setfaulty: (val: boolean) => void;
+  setCount :(val:number)=>void ;
   start:boolean
 }) {
   const [input, setInput] = useState("");
@@ -66,7 +68,7 @@ export default function Terminal({
     setInput("");
   };
 
-  const processCommand = (command: string): string | JSX.Element => {
+  const processCommand = (command: string): string => {
     const [cmd, ...args] = command.split(" ");
 
     switch (cmd.toLowerCase()) {
@@ -101,6 +103,7 @@ export default function Terminal({
           return "Simulation need to be started";
         }
         setfaulty(true);
+        
         return "Malicious Node has been set";
 
       case "about":
