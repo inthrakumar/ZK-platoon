@@ -1,5 +1,3 @@
-"use client";
-
 import type React from "react";
 
 import { useState, useRef, useEffect } from "react";
@@ -18,6 +16,7 @@ export default function Terminal({
   count: number;
   setStart: (val: boolean) => void;
   setfaulty: (val: boolean) => void;
+  start:boolean
 }) {
   const [input, setInput] = useState("");
   const [commandHistory, setCommandHistory] = useState<CommandHistoryItem[]>([
@@ -96,13 +95,13 @@ export default function Terminal({
         return "Simulation Stopped";
       case "setfaulty":
         if (count == 2) {
-          return "Maximum number of malicious trucks has been set";
+          return "Maximum number of malicious trucks has been set already";
         }
         if (!start) {
           return "Simulation need to be started";
         }
         setfaulty(true);
-        return "Malicious Node has been set already";
+        return "Malicious Node has been set";
 
       case "about":
         return "Browser CLI v1.0.0 - A terminal emulator for the web";

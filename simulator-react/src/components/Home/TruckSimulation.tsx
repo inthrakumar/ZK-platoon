@@ -1,16 +1,15 @@
-"use client";
 import { useEffect, useRef, useState } from "react";
 
 const TruckSimulation = ({
   start,
   faulty,
-  setfaulty,
+   setfaulty,
     count,
     setCount
 }: {
   start: boolean;
   faulty: boolean;
-  setfaulty:(val:boolean)=>void;
+        setfaulty:(val:boolean)=>void;
   count:number ;
   setCount :(val:number)=>void;
 }) => {
@@ -24,7 +23,6 @@ const TruckSimulation = ({
     false,
     false,
   ]);
-
 
   let offset = 0; // Background movement offset
   useEffect(() => {
@@ -114,7 +112,6 @@ const TruckSimulation = ({
         ctx.arc(x + 40, truck.y + 30, 5, 0, Math.PI * 2); // Back wheel
         ctx.fill();
 
-        // Display current position value
         const currentPosition = positions[index];
 
         ctx.fillStyle = "black";
