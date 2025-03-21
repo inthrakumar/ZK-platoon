@@ -13,6 +13,6 @@ bb write_vk_ultra_keccak_honk -b ./target/zk_platoon.json
 echo "Generating Contract: "
 bb contract_ultra_honk
 
-mv ./target/*.sol ../src/
+cp ./target/*.sol ../src/
 
 echo "Done!"

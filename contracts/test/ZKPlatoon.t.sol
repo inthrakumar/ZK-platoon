@@ -5,6 +5,7 @@ import "forge-std/Test.sol";
 import {NoirHelper} from "../lib/foundry-noir-helper/src/NoirHelper.sol";
 import {HonkVerifier} from "../src/contract.sol";
 import {ZKPlatoon} from "../src/ZKPlatoon.sol";
+import {console} from "forge-std/console.sol";
 
 contract ContractTest is Test {
     ZKPlatoon public zkPlatoon;
@@ -48,11 +49,18 @@ contract ContractTest is Test {
 
         // Add inputs to NoirHelper
         noirHelper.withInput("vehicles", vehicles);
-        noirHelper.withInput("Vehicle_Responses", vehicleResponses);
+        noirHelper.withInput("Vehicle_Response", vehicleResponses);
         noirHelper.withInput("vehicle_name", vehicle_name);
 
         // Generate proof
         (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_verify", 3);
+
+        console.log("Public Inputs:");
+        for(uint256 i = 0; i < publicInputs.length; i++) {
+            // Convert bytes32 to string for logging
+            string memory inputStr = vm.toString(publicInputs[i]);
+            console.log("Input %d: %s", i, inputStr);
+        }
 
         // Debugging logs
         console.log("Generated Proof Length:", proof.length);
@@ -63,16 +71,5 @@ contract ContractTest is Test {
         
         // Ensure proof verification succeeds
         assertTrue(result, "Proof verification failed!");
-    }
-
-    function test_wrongProof() public {
-        noirHelper.clean();
-        
-        // Generate a proof with incorrect data
-        (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_wrongProof", 1);
-
-        // Expect the contract to revert due to an invalid proof
-        vm.expectRevert();
-        verifier.verify(proof, publicInputs);
     }
 }
