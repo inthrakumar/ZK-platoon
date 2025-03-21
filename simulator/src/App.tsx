@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import Home from './pages/Home';
 import Layout from './components/Layout';
+import Test from './pages/Test';
 
 type Props = {}
 
@@ -15,6 +16,7 @@ const App = (props: Props) => {
         createRoutesFromElements(
             <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
+                <Route path='/test' element={<Test/>}/>
             </Route>
         ) 
     );
