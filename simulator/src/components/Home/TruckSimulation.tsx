@@ -145,11 +145,15 @@ const TruckSimulation = ({
 
           ctx.fillStyle = "red";
           ctx.fillRect(cornerX, cornerY, 50, 30);
-
+          ctx.fillStyle='yellow';
+          ctx.fillRect(cornerX+35,cornerY+5,20,25);
+          
+          ctx.fillStyle = "black";
+          ctx.fillRect(cornerX+40,cornerY+10,10,10);
           ctx.fillStyle = "black";
           ctx.beginPath();
-          ctx.arc(cornerX + 10, cornerY + 30, 5, 0, Math.PI * 2);
-          ctx.arc(cornerX + 40, cornerY + 30, 5, 0, Math.PI * 2);
+          ctx.arc(cornerX + 10, cornerY + 30, 6.5, 0, Math.PI * 2);
+          ctx.arc(cornerX + 40, cornerY + 30, 6.5, 0, Math.PI * 2);
           ctx.fill();
 
           ctx.fillStyle = "black";
@@ -165,10 +169,18 @@ const TruckSimulation = ({
           ctx.fillStyle = "blue";
           ctx.fillRect(x, truck.y, 50, 30);
 
+         
+
+          ctx.fillStyle='yellow';
+          ctx.fillRect(x+35,truck.y+5,20,25);
+          
+          ctx.fillStyle = "black";
+          ctx.fillRect(x+40,truck.y+10,10,10);
+
           ctx.fillStyle = "black";
           ctx.beginPath();
-          ctx.arc(x + 10, truck.y + 30, 5, 0, Math.PI * 2);
-          ctx.arc(x + 40, truck.y + 30, 5, 0, Math.PI * 2);
+          ctx.arc(x + 10, truck.y + 30, 6.5, 0, Math.PI * 2);
+          ctx.arc(x + 40, truck.y + 30, 6.5, 0, Math.PI * 2);
           ctx.fill();
 
           ctx.fillStyle = "black";
@@ -190,12 +202,14 @@ const TruckSimulation = ({
 
   return (
     <div className="flex flex-col items-center">
-      <canvas
+      <div className="">
+        <canvas
         ref={canvasRef}
-        width={800}
+        width={1600}
         height={400}
         style={{ border: "1px solid black", background: "white" }}
-      />
+      /></div>
+      
       <div className="mt-4 text-lg">
         Trucks positioned from 0 to 6 on x-axis, incrementing once per second
       </div>

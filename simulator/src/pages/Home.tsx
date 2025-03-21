@@ -2,12 +2,15 @@
 import React, { useState } from "react";
 import TruckChart from "../components/Home/TruckSimulation";
 import Terminal from "../components/Home/Terminal";
+import { ThirdwebProvider, ConnectButton } from "thirdweb/react";
+import { client,contract } from "../config/thirdwebconfig";
+
 const Home = () => {
   const [start, setStart] = useState(false);
   const [faulty, setfaulty] = useState(false);
   const [count, setCount] = useState(0);
   return (
-      <div className="flex w-full h-screen items-center justify-center gap-10 flex-col">
+      <div className="flex w-full h-screen items-center justify-center gap-10 flex-col p-12">
         <div className="h-1/2">
           <h1>Truck Animation on Chart</h1>
           <TruckChart start={start} count={count} setCount={setCount} faulty={faulty} setfaulty={setfaulty} />

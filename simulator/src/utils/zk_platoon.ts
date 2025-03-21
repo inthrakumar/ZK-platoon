@@ -20,7 +20,7 @@ export const zk_platoon = {
       ["D", "F"],
       ["C", "1"],
     ];
-    const vehicle_name = "A";
+    const vehicle_name = "D";
 
     const inputsZKP = await generateInputs(vehicles, Vehicle_Response, vehicle_name);
     console.log(inputsZKP);

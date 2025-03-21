@@ -10,7 +10,7 @@ contract ZKPlatoon {
         verifier = new HonkVerifier();
     }
 
-    function verify(bytes calldata proof, bytes32[] calldata publicInputs) public view returns (bool) {
+    function verify(bytes calldata proof, bytes32[] calldata publicInputs) public returns (bool) {
         return verifier.verify(proof, publicInputs);
     }
 }
