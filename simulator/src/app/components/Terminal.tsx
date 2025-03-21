@@ -62,7 +62,7 @@ export default function Terminal() {
 
     switch (cmd.toLowerCase()) {
       case "help":
-        return "Available commands: help, clear, echo, date, whoami, ls, about"
+        return "Available commands: help, clear, echo, date, whoami, ls, about , setfaulty , start"
 
       case "clear":
         setTimeout(() => {
