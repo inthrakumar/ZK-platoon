@@ -1,8 +1,27 @@
 export const abi = [
     {
-        "inputs": [],
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_verifier",
+                "type": "address"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "count",
+                "type": "uint256"
+            }
+        ],
+        "name": "CountIncreased",
+        "type": "event"
     },
     {
         "inputs": [],
@@ -31,14 +50,8 @@ export const abi = [
             }
         ],
         "name": "verify",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "view",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     }
-]
+  ]
