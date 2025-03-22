@@ -1,4 +1,5 @@
-import circuit from "../../../assets/zk_platoon/circuit.json"
+import React from 'react'
+import circuit from '../../assets/zk_platoon/circuit.json'
 import { UltraHonkBackend } from "@aztec/bb.js";
 import { Noir } from "@noir-lang/noir_js";
 import initNoirC from "@noir-lang/noirc_abi";
@@ -9,32 +10,20 @@ import { CompiledCircuit } from '@noir-lang/types';
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { useReadContract } from 'wagmi'
 const ZKPlatoon_address="0xf13D09eD3cbdD1C930d4de74808de1f33B6b3D4f"
-import {abi} from "../../config/abi.ts"
+import {abi} from "../config/abi.ts"
 import { useState, useEffect } from "react";
 import { type UseReadContractReturnType } from 'wagmi'
-
-export function uint8ArrayToHex(buffer: Uint8Array): string {
-  const hex: string[] = [];
-
-  buffer.forEach(function (i) {
-    let h = i.toString(16);
-    if (h.length % 2) {
-      h = "0" + h;
-    }
-    hex.push(h);
-  });
-
-  return "0x" + hex.join("");
+import { generateInputs,uint8ArrayToHex } from '../utils/contractutils';
+type Props = {
+    children: React.ReactNode
 }
 
-
-const ZkPlatoonComponent = () => {
+const ProofProviders = (props: Props) => {
   const [proof, setProof] = useState<Uint8Array>(new Uint8Array(0));
-  const [isReady,setIsReady] = useState<boolean>(false);
   const [publicInputs, setPublicInputs] = useState<string[]>([]);
   const { data: hash, isPending, writeContract, error } = useWriteContract();
   const [isVerifying,setIsVerifying] = useState(false);
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+  const { isLoading: _isConfirming, isSuccess: isConfirmed } =
   useWaitForTransactionReceipt({
     hash,
   });
@@ -43,7 +32,6 @@ const [results, setResults] = useState("");
 const showLog = (content: string): void => {
   setLogs((prevLogs) => [...prevLogs, content]);
 };
-
   const generateProof = async () => {
     try {
 
@@ -79,7 +67,7 @@ const showLog = (content: string): void => {
       setIsVerifying(true);
       setProof(cleanProof);
       setPublicInputs(publicInputs);
-      setIsReady(true);
+
     } catch (error) {
       console.error("Error generating proof or sending transaction:", error);
       showLog("Error submitting transaction 💔");
@@ -87,64 +75,9 @@ const showLog = (content: string): void => {
 
     }
   };
-  const {data, refetch,isError,isSuccess}=useReadContract({
-    address: ZKPlatoon_address ,
-    abi: abi,
-    functionName: "verify",
-    args: [uint8ArrayToHex(proof), publicInputs],
-    query:{
-      enabled: !!isReady
-    }
-  });
-  console.log(data);
-  console.log(isError);
-  console.log(isSuccess);
-  useEffect(
-    ()=>{
-      if(isVerifying){
-        refetch();
-      }
-    },[proof,publicInputs]
-  )
-  // Watch for pending, success, or error states from wagmi
-  useEffect(() => {
-    if (isPending) {
-      showLog("Transaction is processing... ⏳");
-    }
-
-    if (error) {
-      showLog("Oh no! Something went wrong. 😞");
-      setResults("Transaction failed.");
-    }
-    if (isConfirming) {
-      showLog("Transaction in progress... ⏳");
-    }
-    // If transaction is successful (status 1)
-    if (isConfirmed) {
-      showLog("You got it right! ✅");
-      setResults("Transaction succeeded!");
-    }
-  }, [isPending, error, isConfirming, isConfirmed]);
-
   return (
-    <div>
-      <button onClick={generateProof}>
-        {"Generate Proof"}
-      </button>
-    </div>
-  );
-};
-
-async function generateInputs(vehicles: string[], Vehicle_Response: string[][], vehicle_name: string) {
-  const validatedVehicleResponse = Vehicle_Response.map(res => 
-    [String(res[0]), String(res[1])]
-  );
-
-  return {
-    vehicles,
-    vehicle_response: validatedVehicleResponse,
-    vehicle_name,
-  };
+    <div>{props.children}</div>
+  )
 }
 
-export default ZkPlatoonComponent;
+export default ProofProviders

@@ -2,6 +2,8 @@
 pragma solidity ^0.8.27;
 
 import {HonkVerifier} from "./contract.sol";
+import {console} from "forge-std/console.sol";
+
 
 contract ZKPlatoon {
     HonkVerifier public verifier;
@@ -13,7 +15,10 @@ contract ZKPlatoon {
     }
 
     function verify(bytes calldata proof, bytes32[] calldata publicInputs) public view returns (bool) {
-        return verifier.verify(proof, publicInputs);
+        console.log("Verifying proof");
+        require( verifier.verify(proof, publicInputs),"Verification failed");
+        console.log("donee");
+        return true;
     } 
     
 }
