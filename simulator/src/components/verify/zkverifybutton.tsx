@@ -30,6 +30,7 @@ export function uint8ArrayToHex(buffer: Uint8Array): string {
 
 const ZkPlatoonComponent = () => {
   const [proof, setProof] = useState<Uint8Array>(new Uint8Array(0));
+  const [isReady,setIsReady] = useState<boolean>(false);
   const [publicInputs, setPublicInputs] = useState<string[]>([]);
   const { data: hash, isPending, writeContract, error } = useWriteContract();
   const [isVerifying,setIsVerifying] = useState(false);
@@ -78,7 +79,7 @@ const showLog = (content: string): void => {
       setIsVerifying(true);
       setProof(cleanProof);
       setPublicInputs(publicInputs);
-
+      setIsReady(true);
     } catch (error) {
       console.error("Error generating proof or sending transaction:", error);
       showLog("Error submitting transaction 💔");
@@ -91,6 +92,9 @@ const showLog = (content: string): void => {
     abi: abi,
     functionName: "verify",
     args: [uint8ArrayToHex(proof), publicInputs],
+    query:{
+      enabled: !!isReady
+    }
   });
   console.log(result);
   useEffect(
