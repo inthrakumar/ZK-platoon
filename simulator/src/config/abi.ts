@@ -1,49 +1,57 @@
-export const abi=  [
+export const abi = [
     {
-      "type": "constructor",
-      "inputs": [
-        { "name": "_verifier", "type": "address", "internalType": "address" }
-      ],
-      "stateMutability": "nonpayable"
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_verifier",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
     },
     {
-      "type": "function",
-      "name": "verifier",
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "",
-          "type": "address",
-          "internalType": "contract HonkVerifier"
-        }
-      ],
-      "stateMutability": "view"
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "count",
+                "type": "uint256"
+            }
+        ],
+        "name": "CountIncreased",
+        "type": "event"
     },
     {
-      "type": "function",
-      "name": "verify",
-      "inputs": [
-        { "name": "proof", "type": "bytes", "internalType": "bytes" },
-        {
-          "name": "publicInputs",
-          "type": "bytes32[]",
-          "internalType": "bytes32[]"
-        }
-      ],
-      "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
-      "stateMutability": "view"
+        "inputs": [],
+        "name": "verifier",
+        "outputs": [
+            {
+                "internalType": "contract HonkVerifier",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     },
     {
-      "type": "event",
-      "name": "CountIncreased",
-      "inputs": [
-        {
-          "name": "count",
-          "type": "uint256",
-          "indexed": false,
-          "internalType": "uint256"
-        }
-      ],
-      "anonymous": false
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "proof",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes32[]",
+                "name": "publicInputs",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "verify",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     }
   ]

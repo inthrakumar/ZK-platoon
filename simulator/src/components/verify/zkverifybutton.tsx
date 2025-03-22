@@ -8,7 +8,7 @@ import noirc from "@noir-lang/noirc_abi/web/noirc_abi_wasm_bg.wasm?url";
 import { CompiledCircuit } from '@noir-lang/types';
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { useReadContract } from 'wagmi'
-const ZKPlatoon_address="0xf13D09eD3cbdD1C930d4de74808de1f33B6b3D4f"
+const ZKPlatoon_address="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
 import {abi} from "../../config/abi.ts"
 import { useState, useEffect } from "react";
 import { type UseReadContractReturnType } from 'wagmi'
