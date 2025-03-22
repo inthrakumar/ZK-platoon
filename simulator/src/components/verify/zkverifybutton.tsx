@@ -8,7 +8,7 @@ import noirc from "@noir-lang/noirc_abi/web/noirc_abi_wasm_bg.wasm?url";
 import { CompiledCircuit } from '@noir-lang/types';
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { useReadContract } from 'wagmi'
-const ZKPlatoon_address="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+const ZKPlatoon_address="0xCEe9557746FECaD892193791BC330433bAaC4F41"
 import {abi} from "../../config/abi.ts"
 import { useState, useEffect } from "react";
 
@@ -28,7 +28,7 @@ export function uint8ArrayToHex(buffer: Uint8Array): string {
 
 
 const ZkPlatoonComponent = () => {
-  const [proof, setProof] = useState<Uint8Array>(new Uint8Array(0));
+  const [proofs, setProof] = useState<Uint8Array>(new Uint8Array(0));
   const [isReady,setIsReady] = useState<boolean>(false);
   const [publicInputs, setPublicInputs] = useState<string[]>([]);
   const { data: hash, isPending, writeContract:_writeContract, error } = useWriteContract();
@@ -69,16 +69,29 @@ const showLog = (content: string): void => {
     const honk = new UltraHonkBackend(circuit.bytecode, { threads: 1 });
       const { witness } = await noir.execute(inputs);
       console.log("hitt")
-
       const { proof, publicInputs } = await honk.generateProof(witness, { keccak: true });
       console.log("Proof Hex:", proof);
       console.log("Formatted Public Inputs:",publicInputs);
       const cleanProof = proof.slice(4); // remove first 4 bytes (buffer size)
-      console.log("proofHex", uint8ArrayToHex(cleanProof));
+      console.log("proofHex", cleanProof);
       setIsVerifying(true);
-      setProof(proof);
+      setProof(cleanProof);
       setPublicInputs(publicInputs);
       setIsReady(true);
+    // try {
+
+    //   await writeContract({
+    //     address: ZKPlatoon_address,
+    //     abi: abi,
+    //     functionName: "verify",
+    //     args: [uint8ArrayToHex(cleanProof),publicInputs],
+    //   });}
+    //   catch(error:unknown){
+    //     console.log(error);
+    //     showLog("Error submitting transaction 💔");
+
+    //   }
+
     } catch (error) {
       console.error("Error generating proof or sending transaction:", error);
       showLog("Error submitting transaction 💔");
@@ -86,26 +99,14 @@ const showLog = (content: string): void => {
 
     }
   };
-  const {data, refetch,isError,isSuccess}=useReadContract({
+
+  const result=useReadContract({
     address: ZKPlatoon_address ,
     abi: abi,
-    functionName: "verify",
-    args: [uint8ArrayToHex(proof), publicInputs],
-    query:{
-      enabled: !!isReady
-    }
+    functionName: "count",
   });
-  console.log(data);
-  console.log(isError);
-  console.log(isSuccess);
-  useEffect(
-    ()=>{
-      if(isVerifying){
-        refetch();
-      }
-    },[proof,publicInputs]
-  )
-  // Watch for pending, success, or error states from wagmi
+  console.log(result.data);
+ 
   useEffect(() => {
     if (isPending) {
       showLog("Transaction is processing... ⏳");

@@ -1,4 +1,4 @@
-fn main(vehicles: pub [str<1>; 6], Vehicle_Response: [(str<1>, str<1>); 6], vehicle_name: pub str<1>) {
+fn main(vehicles: pub [str<1>; 6], Vehicle_Response: [(str<1>, str<1>); 6], vehicle_name: pub str<1>){
     let mut adj_matrix: [[u8; 6]; 6] = [[0; 6]; 6];
 
     for i in 0..6 {
