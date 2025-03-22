@@ -8,7 +8,8 @@ import {console} from "../lib/forge-std/src/console.sol";
 
 contract Deploy is Script {
     function run() public  {
-        ZKPlatoon platoon = new ZKPlatoon();
+        HonkVerifier verifier = new HonkVerifier();
+        ZKPlatoon platoon = new ZKPlatoon(address(verifier));
         console.log("Platoon deployed to: ", address(platoon));
     }
 }
