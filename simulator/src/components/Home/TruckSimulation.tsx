@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { zk_platoon } from "../../utils/zk_platoon";
-
+import zkimg  from "../../../public/zkimg.jpg"
 
 const TruckSimulation = ({
   start,
@@ -35,6 +35,7 @@ const TruckSimulation = ({
     if (!start) {
       setPositions([0, 1, 2, 3, 4, 5]); // Reset positions
       setFaultyNodes([false, false, false, false, false, false]); // Reset faults
+      // console.log("had to stop yo")
       setCount(0);
       if (reqId) {
         cancelAnimationFrame(reqId);
@@ -79,43 +80,40 @@ const TruckSimulation = ({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    if (!start) return;
+    if (!start) {
+      if (reqId) {
+        // console.log("had to stop o")
+        cancelAnimationFrame(reqId);
+        setreqId(null);
+      }
+      return;
+    }
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const xUnit = (canvas.width - 100) / 6;
+    const xUnit = (canvas.width - 100) / 8;
 
     const trucks = [
-      { xPosition: 0, y: 250, position: positions[0] },
-      { xPosition: 1, y: 250, position: positions[1] },
-      { xPosition: 2, y: 250, position: positions[2] },
-      { xPosition: 3, y: 250, position: positions[3] },
-      { xPosition: 4, y: 250, position: positions[4] },
-      { xPosition: 5, y: 250, position: positions[5] },
+      { xPosition: 0, y: 325, position: positions[0] },
+      { xPosition: 1, y: 325, position: positions[1] },
+      { xPosition: 2, y: 325, position: positions[2] },
+      { xPosition: 3, y: 325, position: positions[3] },
+      { xPosition: 4, y: 325, position: positions[4] },
+      { xPosition: 5, y: 325, position: positions[5] },
     ];
 
+    const background = new Image();
+    background.src = zkimg; 
     const animate = () => {
+      if (!start) {
+        // console.log(  "hit man had to stop")
+        return;
+      };
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-      ctx.strokeStyle = "#000";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(50, 300);
-      ctx.lineTo(canvas.width - 50, 300);
-      ctx.stroke();
-
-      ctx.fillStyle = "#000";
-      ctx.font = "14px Arial";
-      for (let i = 0; i <= 5; i++) {
-        const x = 50 + i * xUnit;
-        ctx.beginPath();
-        ctx.moveTo(x, 300);
-        ctx.lineTo(x, 310);
-        ctx.stroke();
-        ctx.fillText(i.toString(), x - 5, 325);
-      }
-
+      //road
       ctx.fillStyle = "#888";
       ctx.fillRect(0, 350, canvas.width, 50);
       ctx.fillStyle = "white";
@@ -146,11 +144,11 @@ const TruckSimulation = ({
 
           ctx.fillStyle = "red";
           ctx.fillRect(cornerX, cornerY, 50, 30);
-          ctx.fillStyle='yellow';
-          ctx.fillRect(cornerX+35,cornerY+5,20,25);
-          
+          ctx.fillStyle = 'yellow';
+          ctx.fillRect(cornerX + 35, cornerY + 5, 20, 25);
+
           ctx.fillStyle = "black";
-          ctx.fillRect(cornerX+40,cornerY+10,10,10);
+          ctx.fillRect(cornerX + 40, cornerY + 10, 10, 10);
           ctx.fillStyle = "black";
           ctx.beginPath();
           ctx.arc(cornerX + 10, cornerY + 30, 6.5, 0, Math.PI * 2);
@@ -159,24 +157,31 @@ const TruckSimulation = ({
 
           ctx.fillStyle = "black";
           ctx.font = "14px Arial";
-          let char = String.fromCharCode(65+truck.xPosition);
+          let char = String.fromCharCode(65 + truck.xPosition);
           ctx.fillText(`Truck ${char}`, cornerX + 60, cornerY + 15);
 
 
           faultyTruckCount++;
         } else {
-          const x = 50 + legitTruckCount * xUnit - 25;
+          // const x = 50 + legitTruckCount * xUnit - 25;
+          const numTrucks = trucks.length;
+          const truckWidth = 50;
+          const xUnit = (canvas.width - 100) / (numTrucks + 1); // Reduce spacing slightly
+          const startX = (canvas.width - (numTrucks * truckWidth + (numTrucks - 1) * xUnit)) / 2;
+
+          const x = startX + legitTruckCount * (truckWidth + xUnit);
+
 
           ctx.fillStyle = "blue";
           ctx.fillRect(x, truck.y, 50, 30);
 
-         
 
-          ctx.fillStyle='yellow';
-          ctx.fillRect(x+35,truck.y+5,20,25);
-          
+
+          ctx.fillStyle = 'yellow';
+          ctx.fillRect(x + 35, truck.y + 5, 20, 25);
+
           ctx.fillStyle = "black";
-          ctx.fillRect(x+40,truck.y+10,10,10);
+          ctx.fillRect(x + 40, truck.y + 10, 10, 10);
 
           ctx.fillStyle = "black";
           ctx.beginPath();
@@ -194,24 +199,35 @@ const TruckSimulation = ({
       });
 
       offset = (offset + 2) % lineSpacing;
-      const newReqId = requestAnimationFrame(animate);
-      setreqId(newReqId);
+      if (start) {
+        const newReqId = requestAnimationFrame(animate);
+        setreqId(newReqId);
+      }
     };
 
     animate();
   }, [positions, start, isFaulty]);
 
+
+  // useEffect(() => {
+  //   if (!start && reqId) {
+  //     // console.log("stopping animation");
+  //     cancelAnimationFrame(reqId);
+  //     // setreqId(null);
+  //   }
+  // }, [start, reqId]);
+
   return (
     <div className="flex flex-col items-center">
       <div className="">
         <canvas
-        ref={canvasRef}
-        width={1600}
-        height={400}
-        style={{ border: "1px solid black", background: "white" }}
-      /></div>
-      
-      <div className="mt-4 text-lg">
+          ref={canvasRef}
+          width={1200}
+          height={400}
+          style={{ border: "1px solid black", background: "white" }}
+        /></div>
+
+      <div className="text-lg">
         Trucks positioned from 0 to 6 on x-axis, incrementing once per second
       </div>
     </div>

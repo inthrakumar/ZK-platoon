@@ -1,42 +1,70 @@
 "use client";
-
+import React, { useEffect, useState } from "react";
 import TruckChart from "../components/Home/TruckSimulation";
 import Terminal from "../components/Home/Terminal";
-import ZkPlatoonComponent from "../components/verify/zkverifybutton";
 import ConnectWallet from "../components/wallet/connectWallet";
-import circuit from "../../assets/zk_platoon/circuit.json"
-import { UltraHonkBackend } from "@aztec/bb.js";
-import { Noir } from "@noir-lang/noir_js";
-import initNoirC from "@noir-lang/noirc_abi";
-import initACVM from "@noir-lang/acvm_js";
-import acvm from "@noir-lang/acvm_js/web/acvm_js_bg.wasm?url";
-import noirc from "@noir-lang/noirc_abi/web/noirc_abi_wasm_bg.wasm?url";
-import { CompiledCircuit } from '@noir-lang/types';
-import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
-import { useReadContract } from 'wagmi'
-const ZKPlatoon_address="0xf13D09eD3cbdD1C930d4de74808de1f33B6b3D4f"
-import {abi} from "../config/abi"
-import { useState, useEffect } from "react";
-import { type UseReadContractReturnType } from 'wagmi'
+import ZkPlatoonComponent from "../components/verify/zkverifybutton";
 const Home = () => {
   const [start, setStart] = useState(false);
   const [faulty, setfaulty] = useState(false);
   const [count, setCount] = useState(0);
+  const [landing, setLanding] = useState(true);
+
+  useEffect(()=>{
+    
+    if(start){
+      setLanding(false);
+    }
+  },[start])
+
+  // useEffect(() => {
+  //   const hasVisited = sessionStorage.getItem("visited");
+  //   if (!hasVisited && !start) {
+  //     sessionStorage.setItem("visited", "true");
+  //     setLanding(true);
+  //   } else {
+  //     setLanding(false);
+  //   }
+  // }, []);
+
+
   return (
-      <div className="flex w-full h-screen items-center justify-center gap-10 flex-col p-12">
-        <div className="h-1/2">
-          <ConnectWallet />
-          <h1>Truck Animation on Chart</h1>
+    <div className="flex w-full h-screen items-center justify-center flex-col p-12">
+      <ConnectWallet />
+      {landing ? <Landing /> :
+        (<div>
           <TruckChart start={start} count={count} setCount={setCount} faulty={faulty} setfaulty={setfaulty} />
-        </div>
-        <div className="h-1/2 w-full">
-          <Terminal  setCount={setCount} setStart={setStart} setfaulty={setfaulty} count={count} start={start} />
-        </div>
-        <div>
-          <ZkPlatoonComponent />
-        </div>
+        </div>)
+      }
+
+      <div className="w-10/12">
+        <Terminal setStart={setStart} setfaulty={setfaulty} count={count} setCount={setCount} start={start} />
       </div>
+      <ZkPlatoonComponent />
+    </div>
   );
 };
 
 export default Home;
+
+import { Vortex } from '../components/ui/Vortex'; // Adjust the import path if needed
+
+function Landing() {
+  return (
+<div className="w-full h-screen flex justify-center items-center bg-white">
+     
+      <div className="relative w-5/6 h-5/6 border border-gray-200 ">
+        <Vortex containerClassName="absolute inset-0" className="rounded-xl" />
+
+        <div className="flex flex-col justify-center items-center text-white z-10 absolute inset-0 ">
+          <p className="font-bold">Welcome to</p>
+          <p className="text-4xl font-bold ">ZK-Platoon</p>
+          <p className="">enter</p>
+          <p className="text-5xl font-bold ">start</p>
+          <p className="font-bold pt-2">to visualize the zk-platoon simulation</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
