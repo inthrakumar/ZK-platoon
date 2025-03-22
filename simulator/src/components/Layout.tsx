@@ -1,19 +1,20 @@
 import { Outlet } from "react-router-dom";
-import { createThirdwebClient } from "thirdweb";
-import { ThirdwebProvider, ConnectButton } from "thirdweb/react";
- 
-
+import { config } from "../config/wagmiConfig";
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 
 const Layout = () => {
   return (
     <div
       className="w-[100vw] min-h-screen flex items-center
             justify-between gap-10"
-    >    <ThirdwebProvider>
-
-            <Outlet/>
-        </ThirdwebProvider>
-
+    >
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <Outlet />
+        </QueryClientProvider>
+      </WagmiProvider>
     </div>
   );
 };

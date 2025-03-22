@@ -16,7 +16,7 @@ const TruckSimulation = ({
   setfaulty: (val: boolean) => void;
   setCount: (val: number) => void;
 }) => {
-  zk_platoon.generateProof();
+  // zk_platoon.generateProof();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [positions, setPositions] = useState<number[]>([0, 1, 2, 3, 4, 5, 6]);
   const [reqId, setreqId] = useState<number | null>(null);

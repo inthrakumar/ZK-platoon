@@ -69,7 +69,7 @@ export default function Terminal({
     setInput("");
   };
 
-  const processCommand = async (command: string): string | JSX.Element => {
+  const processCommand = async (command: string): Promise<string | JSX.Element> => {
     const [cmd, ...args] = command.split(" ");
 
     switch (cmd.toLowerCase()) {

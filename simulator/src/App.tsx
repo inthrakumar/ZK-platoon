@@ -7,8 +7,6 @@ import {
 } from 'react-router-dom';
 import Home from './pages/Home';
 import Layout from './components/Layout';
-import { createThirdwebClient } from "thirdweb";
-import { ThirdwebProvider, ConnectButton } from "thirdweb/react";
  import Test from './pages/Test';
 
 type Props = {}

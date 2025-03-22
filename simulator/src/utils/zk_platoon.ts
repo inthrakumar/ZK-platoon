@@ -1,11 +1,22 @@
 import React from "react";
 import { InputMap, type CompiledCircuit } from "@noir-lang/noir_js";
 import { initProver } from "./lazy-modules";
+import { ethers } from "ethers";
+
 
 async function loadCircuitArtifact() {
   return await import("../../assets/zk_platoon/circuit.json");
 }
+type ProofData = Uint8Array; // Adjust this if your ProofData type is different
 
+/**
+ * Formats proof data for contract call
+ */
+function uint8ArrayToHex(uint8Array: Uint8Array) {
+  return Array.from(uint8Array)
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
 export const zk_platoon = {
   generateProof: async () => {
     // Load the circuit artifact inside the async function
@@ -20,7 +31,7 @@ export const zk_platoon = {
       ["D", "F"],
       ["C", "1"],
     ];
-    const vehicle_name = "D";
+    const vehicle_name = "A";
 
     const inputsZKP = await generateInputs(vehicles, Vehicle_Response, vehicle_name);
     console.log(inputsZKP);
@@ -40,9 +51,10 @@ export const zk_platoon = {
     const { witness } = await noir.execute(inputs as InputMap);
     const proof = await backend.generateProof(witness);
     const provingTime = performance.now() - startTime;
-
     console.log(proof);
-    console.log(`Proof generated in ${provingTime}ms`);
+    const proofHex = uint8ArrayToHex(proof.proof);
+    console.log(proofHex);
+
   },
 };
 
