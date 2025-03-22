@@ -9,11 +9,9 @@ contract ZKPlatoon {
 
     constructor(address _verifier) {
         verifier = HonkVerifier(_verifier);
-        console.log(_verifier);
     }
 
     function verify(bytes calldata proof, bytes32[] calldata publicInputs) public view returns (bool) {
-        console.log("here");
         return verifier.verify(proof, publicInputs);
     }
 }
