@@ -11,7 +11,6 @@ import { useReadContract } from 'wagmi'
 const ZKPlatoon_address="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
 import {abi} from "../../config/abi.ts"
 import { useState, useEffect } from "react";
-import { type UseReadContractReturnType } from 'wagmi'
 
 export function uint8ArrayToHex(buffer: Uint8Array): string {
   const hex: string[] = [];
@@ -32,14 +31,14 @@ const ZkPlatoonComponent = () => {
   const [proof, setProof] = useState<Uint8Array>(new Uint8Array(0));
   const [isReady,setIsReady] = useState<boolean>(false);
   const [publicInputs, setPublicInputs] = useState<string[]>([]);
-  const { data: hash, isPending, writeContract, error } = useWriteContract();
+  const { data: hash, isPending, writeContract:_writeContract, error } = useWriteContract();
   const [isVerifying,setIsVerifying] = useState(false);
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
   useWaitForTransactionReceipt({
     hash,
   });
-const [logs, setLogs] = useState<string[]>([]);
-const [results, setResults] = useState("");
+const [_logs, setLogs] = useState<string[]>([]);
+const [_results, setResults] = useState("");
 const showLog = (content: string): void => {
   setLogs((prevLogs) => [...prevLogs, content]);
 };
