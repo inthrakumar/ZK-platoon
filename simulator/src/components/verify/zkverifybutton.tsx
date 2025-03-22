@@ -8,7 +8,7 @@ import noirc from "@noir-lang/noirc_abi/web/noirc_abi_wasm_bg.wasm?url";
 import { CompiledCircuit } from '@noir-lang/types';
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { useReadContract } from 'wagmi'
-const ZKPlatoon_address="0xf13D09eD3cbdD1C930d4de74808de1f33B6b3D4f"
+const ZKPlatoon_address="0xCEe9557746FECaD892193791BC330433bAaC4F41"
 import {abi} from "../../config/abi.ts"
 import { useState, useEffect } from "react";
 import { type UseReadContractReturnType } from 'wagmi'
@@ -79,19 +79,19 @@ const showLog = (content: string): void => {
       setProof(cleanProof);
       setPublicInputs(publicInputs);
       setIsReady(true);
-    try {
+    // try {
 
-      await writeContract({
-        address: ZKPlatoon_address,
-        abi: abi,
-        functionName: "verify",
-        args: [uint8ArrayToHex(cleanProof),publicInputs],
-      });}
-      catch(error:unknown){
-        console.log(error);
-        showLog("Error submitting transaction 💔");
+    //   await writeContract({
+    //     address: ZKPlatoon_address,
+    //     abi: abi,
+    //     functionName: "verify",
+    //     args: [uint8ArrayToHex(cleanProof),publicInputs],
+    //   });}
+    //   catch(error:unknown){
+    //     console.log(error);
+    //     showLog("Error submitting transaction 💔");
 
-      }
+    //   }
 
     } catch (error) {
       console.error("Error generating proof or sending transaction:", error);
@@ -100,25 +100,7 @@ const showLog = (content: string): void => {
 
     }
   };
-   // Watch for pending, success, or error states from wagmi
-   useEffect(() => {
-    if (isPending) {
-      showLog("Transaction is processing... ⏳");
-    }
 
-    if (error) {
-      showLog("Oh no! Something went wrong. 😞");
-      setResults("Transaction failed.");
-    }
-    if (isConfirming) {
-      showLog("Transaction in progress... ⏳");
-    }
-    // If transaction is successful (status 1)
-    if (isConfirmed) {
-      showLog("You got it right! ✅");
-      setResults("Transaction succeeded!");
-    }
-  }, [isPending, error, isConfirming, isConfirmed]);
   const result=useReadContract({
     address: ZKPlatoon_address ,
     abi: abi,
