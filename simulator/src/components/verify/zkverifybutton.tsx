@@ -77,7 +77,7 @@ const showLog = (content: string): void => {
       const cleanProof = proof.slice(4); // remove first 4 bytes (buffer size)
       console.log("proofHex", uint8ArrayToHex(cleanProof));
       setIsVerifying(true);
-      setProof(cleanProof);
+      setProof(proof);
       setPublicInputs(publicInputs);
       setIsReady(true);
     } catch (error) {
