@@ -170,7 +170,7 @@ export default function Terminal({
     <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 shadow-xl">
       <div
         ref={terminalRef}
-        className="bg-black p-4 h-96 overflow-y-auto font-mono text-sm text-gray-200"
+        className="bg-black p-4 h-80 overflow-y-auto font-mono text-sm text-gray-200"
       >
         <div className="mb-4">
           <p className="text-green-400">ZKP PLATOON</p>
