@@ -19,6 +19,10 @@
     "hardhat": "^2.19.2"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
+    "@noble/ed25519": "^2.2.3",
+    "@noble/hashes": "^1.7.1",
+    "noir-jwt": "^0.4.5",
     "@noir-lang/noir_js": "1.0.0-beta.0",
     "@noir-lang/noir_wasm": "1.0.0-beta.0",
     "@noir-lang/types": "1.0.0-beta.0",
