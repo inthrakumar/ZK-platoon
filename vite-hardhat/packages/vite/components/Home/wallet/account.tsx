@@ -4,7 +4,7 @@ export function Account() {
   const { address } = useAccount()
   const { disconnect } = useDisconnect()
   const { data: ensName } = useEnsName({ address })
-  const { data: ensAvatar } = useEnsAvatar({ name: ensName })
+  const { data: ensAvatar } = useEnsAvatar({ name: ensName! })
 
   return (
     <div className="flex flex-col items-center space-y-6 p-6 rounded-lg bg-white shadow-xl w-72">

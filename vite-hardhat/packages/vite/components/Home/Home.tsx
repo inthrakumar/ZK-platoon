@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import TruckChart from "./TruckSimulation.jsx";
 import Terminal from "./Terminal.jsx";
 import ConnectWallet from "./wallet/connectWallet.jsx";
-import ZkPlatoonComponent from "./zkverifybutton.jsx";
 const Home = () => {
   const [start, setStart] = useState(false);
   const [faulty, setfaulty] = useState(false);
@@ -40,14 +39,13 @@ const Home = () => {
       <div className="w-10/12">
         <Terminal setStart={setStart} setfaulty={setfaulty} count={count} setCount={setCount} start={start} />
       </div>
-      <ZkPlatoonComponent />
     </div>
   );
 };
 
 export default Home;
 
-import { Vortex } from '../components/ui/Vortex'; // Adjust the import path if needed
+import { Vortex } from '../ui/Vortex.jsx'; // Adjust the import path if needed
 
 function Landing() {
   return (

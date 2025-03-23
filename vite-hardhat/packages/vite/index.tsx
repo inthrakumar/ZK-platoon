@@ -6,13 +6,11 @@ import initNoirC from '@noir-lang/noirc_abi';
 import initACVM from '@noir-lang/acvm_js';
 // @ts-ignore
 await Promise.all([initACVM(fetch(acvm)), initNoirC(fetch(noirc))]);
-
+import './index.css'
 import React, { ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import Component from './components/index.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { defineChain, createClient } from 'viem';
@@ -20,9 +18,9 @@ import { injected } from 'wagmi/connectors';
 import { networkConfig } from '../../deployment.json';
 import {GoogleOAuthProvider} from "@react-oauth/google"
 
-
+import Home from './components/Home/Home.jsx';
 const queryClient = new QueryClient();
-
+import Component from './components/index.jsx';
 const { id, name, nativeCurrency, rpcUrls } = networkConfig;
 const chain = defineChain({
   id,
@@ -55,7 +53,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Providers>
-    <Component />
+    <Home />
     <ToastContainer />
   </Providers>,
 );

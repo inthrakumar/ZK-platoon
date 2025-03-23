@@ -7,9 +7,9 @@ import { UltraPlonkBackend } from '@aztec/bb.js';
 import { Noir } from '@noir-lang/noir_js';
 
 export function useOffChainVerification(
-  backend: UltraPlonkBackend,
-  noir?: Noir,
-  proofData?: ProofData,
+  backend:UltraPlonkBackend,
+  noir:Noir,
+  proofData:ProofData,
 ) {
   useEffect(() => {
     if (!proofData || !noir) return;

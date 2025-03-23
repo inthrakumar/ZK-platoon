@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { zk_platoon } from "../../utils/zk_platoon";
-import zkimg  from "../../../public/zkimg.jpg"
+import zkimg  from "../../public/zkimg.jpg"
 
 const TruckSimulation = ({
   start,
@@ -9,12 +8,18 @@ const TruckSimulation = ({
   count,
   setfaulty,
   setCount,
+}: {
+  start: boolean;
+  faulty: boolean;
+  count: number;
+  setfaulty: (val: boolean) => void;
+  setCount: (val: number) => void;
 }) => {
   // zk_platoon.generateProof();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [positions, setPositions] = useState([0, 1, 2, 3, 4, 5, 6]);
-  const [reqId, setreqId] = useState(null);
-  const [isFaulty, setFaultyNodes] = useState([
+  const [positions, setPositions] = useState<number[]>([0, 1, 2, 3, 4, 5, 6]);
+  const [reqId, setreqId] = useState<number | null>(null);
+  const [isFaulty, setFaultyNodes] = useState<boolean[]>([
     false,
     false,
     false,
