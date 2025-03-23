@@ -1,0 +1,65 @@
+name: PR - with-foundry
+on:
+  pull_request:
+    paths:
+      - 'with-foundry/**'
+
+jobs:
+  test-with-foundry:
+    defaults:
+      run:
+        working-directory: with-foundry
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install libc++
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libc++-dev libc++abi-dev
+
+      - name: Get latest version
+        id: versions_step
+        run: |
+          output=$(node ../.github/scripts/latest.js)
+          echo "Output from Node.js script: $output"
+
+          STABLE=$(echo $output | jq -r '.stable')
+          echo "::set-output name=stable::$STABLE"
+
+      - name: Set up nargo
+        uses: ./.github/actions/setup-nargo
+        with:
+          version: ${{ steps.versions_step.outputs.stable }}
+
+      - name: Set up foundry
+        uses: ./.github/actions/setup-foundry
+
+      - name: Install bb
+        run: |
+          curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/master/barretenberg/cpp/installation/install | bash
+          echo "PATH=$PATH:/home/runner/.bb" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Use bbup
+        run: |
+          bbup -v 0.63.1
+        shell: bash
+
+      - name: Generate verifier contract
+        run: |
+          nargo compile && bb write_vk -b ./target/with_foundry.json && bb contract
+        working-directory: with-foundry/circuits
+
+      - name: Generate proof
+        run: |
+          nargo execute witness
+          bb prove -b ./target/with_foundry.json -w ./target/witness.gz -o ./target/with_foundry.proof
+        working-directory: with-foundry/circuits
+
+      - name: Test with Foundry
+        run: |
+          forge test --optimize --optimizer-runs 5000 --evm-version cancun
