@@ -16,3 +16,19 @@ export async function getCircuit() {
   }
   return result.program as CompiledCircuit;
 }
+
+export async function getJWTCircuit() {
+  const fm = createFileManager('/');
+  const main = (await fetch(new URL(`./src/jwt.nr`, import.meta.url)))
+    .body as ReadableStream<Uint8Array>;
+  const nargoToml = (await fetch(new URL(`./Nargo.toml`, import.meta.url)))
+    .body as ReadableStream<Uint8Array>;
+
+  fm.writeFile('./src/jwt.nr', main);
+  fm.writeFile('./Nargo.toml', nargoToml);
+  const result = await compile(fm);
+  if (!('program' in result)) {
+    throw new Error('Compilation failed');
+  }
+  return result.program as CompiledCircuit;
+}
