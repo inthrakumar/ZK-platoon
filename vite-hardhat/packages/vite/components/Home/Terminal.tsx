@@ -15,7 +15,12 @@ export default function Terminal({
     setfaulty,
     setCount,
     count,
+    swap,
+    setSwap
 }: {
+        
+    setSwap :(val:boolean)=>void;
+    swap:boolean;
     count: number;
     setStart: (val: boolean) => void;
     setfaulty: (val: boolean) => void;
@@ -133,10 +138,13 @@ export default function Terminal({
                 return 'Malicious Node has been set';
             case 'about':
                 return 'Browser CLI v1.0.0 - A terminal emulator for the web';
+            case 'swap':
+                setSwap(true);
+                return 'Nodes are swapped' 
             case 'prove':
                 console.log(args);
                 if (args.length !==1) {
-                    return 'Error: Usage: prove <vehicle_name>';
+                    return 'Error: Missing argument. Usage: prove <vehicle_name>';
                 }
                 console.log('function triggered');
                 proofSubmit(args[0]);
