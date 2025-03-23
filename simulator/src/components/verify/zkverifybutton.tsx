@@ -78,19 +78,19 @@ const showLog = (content: string): void => {
       setProof(cleanProof);
       setPublicInputs(publicInputs);
       setIsReady(true);
-    // try {
+    try {
 
-    //   await writeContract({
-    //     address: ZKPlatoon_address,
-    //     abi: abi,
-    //     functionName: "verify",
-    //     args: [uint8ArrayToHex(cleanProof),publicInputs],
-    //   });}
-    //   catch(error:unknown){
-    //     console.log(error);
-    //     showLog("Error submitting transaction 💔");
+      await writeContract({
+        address: ZKPlatoon_address,
+        abi: abi,
+        functionName: "verify",
+        args: [uint8ArrayToHex(cleanProof),publicInputs],
+      });}
+      catch(error:unknown){
+        console.log(error);
+        showLog("Error submitting transaction 💔");
 
-    //   }
+      }
 
     } catch (error) {
       console.error("Error generating proof or sending transaction:", error);
