@@ -12,7 +12,7 @@ const Home = () => {
   const [count, setCount] = useState(0);
   const [landing, setLanding] = useState(true);
   const [authStatus, setAuthStatus] = useState(false);
-
+  const [swap,setSwap] = useState(false);
   useEffect(() => {
     if (start) {
       setLanding(false);
@@ -44,6 +44,8 @@ const Home = () => {
             start={start}
             count={count}
             setCount={setCount}
+                        setSwap={setSwap}
+                            swap={swap}
             faulty={faulty}
             setfaulty={setfaulty}
           />
@@ -53,6 +55,9 @@ const Home = () => {
       {authStatus && (
         <div className="w-10/12">
           <Terminal
+                        
+                        setSwap={setSwap}
+                            swap={swap}
             setStart={setStart}
             setfaulty={setfaulty}
             count={count}
