@@ -1,9 +1,23 @@
-import { cn } from "../../utils/utils";
+import { cn } from "../../utils/utils.js";
 import React, { useEffect, useRef } from "react";
 import { createNoise3D } from "simplex-noise";
 import { motion } from "motion/react";
 
-export const Vortex = (props) => {
+interface VortexProps {
+  children?: any;
+  className?: string;
+  containerClassName?: string;
+  particleCount?: number;
+  rangeY?: number;
+  baseHue?: number;
+  baseSpeed?: number;
+  rangeSpeed?: number;
+  baseRadius?: number;
+  rangeRadius?: number;
+  backgroundColor?: string;
+}
+
+export const Vortex = (props: VortexProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef(null);
   const particleCount = props.particleCount || 700;
@@ -26,18 +40,18 @@ export const Vortex = (props) => {
   let tick = 0;
   const noise3D = createNoise3D();
   let particleProps = new Float32Array(particlePropsLength);
-  let center = [0, 0];
+  let center: [number, number] = [0, 0];
 
-  const HALF_PI = 0.5 * Math.PI;
-  const TAU = 2 * Math.PI;
-  const TO_RAD = Math.PI / 180;
-  const rand = (n) => n * Math.random();
-  const randRange = (n) => n - rand(2 * n);
-  const fadeInOut = (t, m) => {
+  const HALF_PI: number = 0.5 * Math.PI;
+  const TAU: number = 2 * Math.PI;
+  const TO_RAD: number = Math.PI / 180;
+  const rand = (n: number): number => n * Math.random();
+  const randRange = (n: number): number => n - rand(2 * n);
+  const fadeInOut = (t: number, m: number): number => {
     let hm = 0.5 * m;
     return Math.abs(((t + hm) % m) - hm) / hm;
   };
-  const lerp = (n1, n2, speed) =>
+  const lerp = (n1: number, n2: number, speed: number): number =>
     (1 - speed) * n1 + speed * n2;
 
   const setup = () => {
@@ -64,7 +78,7 @@ export const Vortex = (props) => {
     }
   };
 
-  const initParticle = (i) => {
+  const initParticle = (i: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -83,7 +97,7 @@ export const Vortex = (props) => {
     particleProps.set([x, y, vx, vy, life, ttl, speed, radius, hue], i);
   };
 
-  const draw = (canvas, ctx) => {
+  const draw = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
     tick++;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -98,13 +112,13 @@ export const Vortex = (props) => {
     window.requestAnimationFrame(() => draw(canvas, ctx));
   };
 
-  const drawParticles = (ctx) => {
+  const drawParticles = (ctx: CanvasRenderingContext2D) => {
     for (let i = 0; i < particlePropsLength; i += particlePropCount) {
       updateParticle(i, ctx);
     }
   };
 
-  const updateParticle = (i, ctx) => {
+  const updateParticle = (i: number, ctx: CanvasRenderingContext2D) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -145,15 +159,15 @@ export const Vortex = (props) => {
   };
 
   const drawParticle = (
-    x,
-    y,
-    x2,
-    y2,
-    life,
-    ttl,
-    radius,
-    hue,
-    ctx
+    x: number,
+    y: number,
+    x2: number,
+    y2: number,
+    life: number,
+    ttl: number,
+    radius: number,
+    hue: number,
+    ctx: CanvasRenderingContext2D
   ) => {
     ctx.save();
     ctx.lineCap = "round";
@@ -167,7 +181,7 @@ export const Vortex = (props) => {
     ctx.restore();
   };
 
-  const checkBounds = (x, y, canvas) => {
+  const checkBounds = (x: number, y: number, canvas: HTMLCanvasElement) => {
     return x > canvas.width || x < 0 || y > canvas.height || y < 0;
   };
 
@@ -185,7 +199,7 @@ export const Vortex = (props) => {
   // };
 
 
-  const resize = (canvas, ctx) => {
+  const resize = (canvas: HTMLCanvasElement, ctx?: CanvasRenderingContext2D) => {
     const container = canvas.parentElement;
     if (!container) return;
   
@@ -199,8 +213,8 @@ export const Vortex = (props) => {
   };
 
   const renderGlow = (
-    canvas,
-    ctx
+    canvas: HTMLCanvasElement,
+    ctx: CanvasRenderingContext2D
   ) => {
     ctx.save();
     ctx.filter = "blur(8px) brightness(200%)";
@@ -216,8 +230,9 @@ export const Vortex = (props) => {
   };
 
   const renderToScreen = (
-    canvas,
-    ctx  ) => {
+    canvas: HTMLCanvasElement,
+    ctx: CanvasRenderingContext2D
+  ) => {
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
     ctx.drawImage(canvas, 0, 0);

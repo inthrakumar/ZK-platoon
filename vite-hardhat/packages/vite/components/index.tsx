@@ -1,14 +1,21 @@
 import { useState } from 'react';
 import React from 'react';
-import { useOnChainVerification } from '../hooks/useOnChainVerification.js';
-import { useProofGeneration } from '../hooks/useProofGeneration.js';
-import { useOffChainVerification } from '../hooks/useOffChainVerification.js';
-import JwtAuth from './jwtAuth.jsx';
 
+import { useOnChainVerification } from '../hooks/useOnChainVerification.jsx';
+import { useProofGeneration } from '../hooks/useProofGeneration.js';
+import { useOffChainVerification } from '../hooks/useOffChainVerification.jsx';
+
+export type Props = {
+  vehicles : string[]
+  Vehicle_Response : string[][]
+  vehicle_name : string
+}
 function Component() {
-  const [input, setInput] = useState();
+  const [input, setInput] = useState<Props| undefined>();
+  console.log(input);
   const { noir, proofData, backend } = useProofGeneration(input);
-  useOffChainVerification(backend, noir, proofData);
+  console.log(proofData);
+  useOffChainVerification(backend!, noir!, proofData!);
   const verifyButton = useOnChainVerification(proofData);
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
