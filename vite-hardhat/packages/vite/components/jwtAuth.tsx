@@ -73,7 +73,7 @@ const Auth = () => {
       />
       
       {/* Logout button */}
-      <button onClick={logout}>Logout</button>
+      {/* <button onClick={logout}>Logout</button> */}
     </div>
   );
 };

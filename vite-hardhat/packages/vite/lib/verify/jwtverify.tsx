@@ -95,12 +95,11 @@ publicInput}:
     console.log("maari");
 
     const verifier = new BarretenbergVerifier({
-      crsPath: "../crs",
+      crsPath: "/temp/crs",
     });
     const result = await verifier.verifyUltraHonkProof(
       proofData,
       Uint8Array.from(vkey.default)
     );
-
     return result;
   }

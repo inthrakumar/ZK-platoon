@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import TruckChart from "./TruckSimulation.jsx";
 import Terminal from "./Terminal.jsx";
 import ConnectWallet from "./wallet/connectWallet.jsx";
+import JwtAuth from "../jwtAuth.jsx";
 const Home = () => {
   const [start, setStart] = useState(false);
   const [faulty, setfaulty] = useState(false);
@@ -29,7 +30,11 @@ const Home = () => {
 
   return (
     <div className="flex w-full h-screen items-center justify-center flex-col p-12">
-      <ConnectWallet />
+      <div className="flex">      <ConnectWallet /> 
+      <JwtAuth />
+
+      </div>
+
       {landing ? <Landing /> :
         (<div>
           <TruckChart start={start} count={count} setCount={setCount} faulty={faulty} setfaulty={setfaulty} />
