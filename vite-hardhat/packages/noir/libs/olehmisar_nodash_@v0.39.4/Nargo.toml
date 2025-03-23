@@ -1,0 +1,6 @@
+[package]
+name = "nodash"
+type = "lib"
+authors = ["Oleh Misarosh <olehmisar@gmail.com>"]
+
+[dependencies]

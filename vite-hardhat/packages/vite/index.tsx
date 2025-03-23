@@ -18,6 +18,8 @@ import { WagmiProvider, createConfig, http } from 'wagmi';
 import { defineChain, createClient } from 'viem';
 import { injected } from 'wagmi/connectors';
 import { networkConfig } from '../../deployment.json';
+import {GoogleOAuthProvider} from "@react-oauth/google"
+
 
 const queryClient = new QueryClient();
 
@@ -41,9 +43,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);
   return (
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID!}>
+
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>{mounted && children}</QueryClientProvider>
     </WagmiProvider>
+    </GoogleOAuthProvider>
+
   );
 }
 

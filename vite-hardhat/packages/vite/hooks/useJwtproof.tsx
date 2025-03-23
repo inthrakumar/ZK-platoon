@@ -3,6 +3,8 @@ import { InputMap, type CompiledCircuit } from "@noir-lang/noir_js";
 import { initProver, initVerifier } from "../lib/lazy-modules.js";
 import { EphemeralKey } from "../lib/types.js";
 import { splitBigIntToLimbs } from "../lib/utils.js";
+import { getCircuit } from '../../noir/compile.js';
+
 
 const MAX_DOMAIN_LENGTH = 64;
 
@@ -54,14 +56,16 @@ export const JWT_CIRCUIT_HELPER = {
     console.log("JWT circuit inputs", inputs);
 
     const { Noir, UltraHonkBackend } = await initProver();
-    const circuitArtifact = await import(`../../assets/jwt-1.0.0/circuit.json`);
-    const backend = new UltraHonkBackend(circuitArtifact.bytecode);
-    const noir = new Noir(circuitArtifact as CompiledCircuit);
-
+    const circuitArtifact = await import(`../assets/jwt/circuit.json`);
+    const backend = new UltraHonkBackend(circuitArtifact.default.bytecode);
+    const noir = new Noir(circuitArtifact.default as CompiledCircuit);
+    console.log("hitttt")
     // Generate witness and prove
     const startTime = performance.now();
     const { witness } = await noir.execute(inputs as InputMap);
+    console.log("hitt")
     const proof = await backend.generateProof(witness);
+    console.log("hitt")
     const provingTime = performance.now() - startTime;
 
     console.log(`Proof generated in ${provingTime}ms`);
@@ -71,66 +75,66 @@ export const JWT_CIRCUIT_HELPER = {
 
   //
 
-  verifyProof: async (
-    proof: Uint8Array,
-    { domain,
-      jwtPubKey,
-      ephemeralPubkey,
-      ephemeralPubkeyExpiry }:
-      {
-        domain: string;
-        jwtPubKey: bigint;
-        ephemeralPubkey: bigint;
-        ephemeralPubkeyExpiry: Date;
-      }
-  ) => {
-    if (!domain || !jwtPubKey || !ephemeralPubkey || !ephemeralPubkeyExpiry) {
-      throw new Error(
-        "[JWT Circuit] Proof verification failed: invalid public inputs"
-      );
-    }
+//   verifyProof: async (
+//     proof: Uint8Array,
+//     { domain,
+//       jwtPubKey,
+//       ephemeralPubkey,
+//       ephemeralPubkeyExpiry }:
+//       {
+//         domain: string;
+//         jwtPubKey: bigint;
+//         ephemeralPubkey: bigint;
+//         ephemeralPubkeyExpiry: Date;
+//       }
+//   ) => {
+//     if (!domain || !jwtPubKey || !ephemeralPubkey || !ephemeralPubkeyExpiry) {
+//       throw new Error(
+//         "[JWT Circuit] Proof verification failed: invalid public inputs"
+//       );
+//     }
 
-    const { BarretenbergVerifier } = await initVerifier();
+//     const { BarretenbergVerifier } = await initVerifier();
 
-    const vkey = await import(`../../assets/jwt-1.0.0/circuit-vkey.json`);
-    // Public Inputs = pubkey_limbs(18) + domain(64) + ephemeral_pubkey(1) + ephemeral_pubkey_expiry(1) = 84
-    const publicInputs = [];
+//     const vkey = await import(`../../assets/jwt-1.0.0/circuit-vkey.json`);
+//     // Public Inputs = pubkey_limbs(18) + domain(64) + ephemeral_pubkey(1) + ephemeral_pubkey_expiry(1) = 84
+//     const publicInputs = [];
 
-    // Push modulus limbs as 64 char hex strings (18 Fields)
-    const modulusLimbs = splitBigIntToLimbs(jwtPubKey, 120, 18);
-    publicInputs.push(
-      ...modulusLimbs.map((s) => "0x" + s.toString(16).padStart(64, "0"))
-    );
+//     // Push modulus limbs as 64 char hex strings (18 Fields)
+//     const modulusLimbs = splitBigIntToLimbs(jwtPubKey, 120, 18);
+//     publicInputs.push(
+//       ...modulusLimbs.map((s) => "0x" + s.toString(16).padStart(64, "0"))
+//     );
 
-    // Push domain + domain length (BoundedVec of 64 bytes)
-    const domainUint8Array = new Uint8Array(64);
-    domainUint8Array.set(Uint8Array.from(new TextEncoder().encode(domain)));
-    publicInputs.push(
-      ...Array.from(domainUint8Array).map(
-        (s) => "0x" + s.toString(16).padStart(64, "0")
-      )
-    );
-    publicInputs.push("0x" + domain.length.toString(16).padStart(64, "0"));
+//     // Push domain + domain length (BoundedVec of 64 bytes)
+//     const domainUint8Array = new Uint8Array(64);
+//     domainUint8Array.set(Uint8Array.from(new TextEncoder().encode(domain)));
+//     publicInputs.push(
+//       ...Array.from(domainUint8Array).map(
+//         (s) => "0x" + s.toString(16).padStart(64, "0")
+//       )
+//     );
+//     publicInputs.push("0x" + domain.length.toString(16).padStart(64, "0"));
 
-    // Push ephemeral pubkey (1 Field)
-    publicInputs.push("0x" + (ephemeralPubkey >> 3n).toString(16).padStart(64, "0"));
+//     // Push ephemeral pubkey (1 Field)
+//     publicInputs.push("0x" + (ephemeralPubkey >> 3n).toString(16).padStart(64, "0"));
 
-    // Push ephemeral pubkey expiry (1 Field)
-    publicInputs.push("0x" + Math.floor(ephemeralPubkeyExpiry.getTime() / 1000).toString(16).padStart(64, "0"));
+//     // Push ephemeral pubkey expiry (1 Field)
+//     publicInputs.push("0x" + Math.floor(ephemeralPubkeyExpiry.getTime() / 1000).toString(16).padStart(64, "0"));
 
-    const proofData = {
-      proof: proof,
-      publicInputs,
-    };
+//     const proofData = {
+//       proof: proof,
+//       publicInputs,
+//     };
 
-    const verifier = new BarretenbergVerifier({
-      crsPath: process.env.TEMP_DIR,
-    });
-    const result = await verifier.verifyUltraHonkProof(
-      proofData,
-      Uint8Array.from(vkey)
-    );
+//     const verifier = new BarretenbergVerifier({
+//       crsPath: process.env.TEMP_DIR,
+//     });
+//     const result = await verifier.verifyUltraHonkProof(
+//       proofData,
+//       Uint8Array.from(vkey)
+//     );
 
-    return result;
-  },
+//     return result;
+//   },
 };

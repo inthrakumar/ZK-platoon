@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import React from 'react';
-
 import { useOnChainVerification } from '../hooks/useOnChainVerification.js';
 import { useProofGeneration } from '../hooks/useProofGeneration.js';
 import { useOffChainVerification } from '../hooks/useOffChainVerification.js';
+import JwtAuth from './jwtAuth.jsx';
 
 export type Props = {
   vehicles : string[]
@@ -41,6 +41,7 @@ function Component() {
         <p>Try it!</p>
         <button type="submit">Calculate proof</button>
       </form>
+      <JwtAuth />
       {verifyButton}
     </>
   );

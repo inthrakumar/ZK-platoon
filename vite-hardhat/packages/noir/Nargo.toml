@@ -1,5 +1,6 @@
 [package]
 name = "noirstarter"
 type = "bin"
-
+# entry="src/jwt.nr"
 [dependencies]
+# jwt = { tag = "v0.4.3", git = "https://github.com/zkemail/noir-jwt" }
