@@ -5,6 +5,7 @@ import { UltraPlonkBackend } from '@aztec/bb.js';
 import { Noir } from '@noir-lang/noir_js';
 import { ProofData } from '@noir-lang/types';
 import { Props } from '../components/index.jsx';
+
 export function useProofGeneration(inputs?: Props) {
   const [proofData, setProofData] = useState<ProofData | undefined>();
   const [backend, setBackend] = useState<UltraPlonkBackend>();
