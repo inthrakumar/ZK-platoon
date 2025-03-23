@@ -26,3 +26,23 @@ export function splitBigIntToLimbs(
   }
   return chunks;
 }
+export async function pubkeyModulusFromJWK(jwk: JsonWebKey) {
+  // Parse pubkeyJWK
+  const publicKey = await crypto.subtle.importKey(
+    "jwk",
+    jwk,
+    {
+      name: "RSASSA-PKCS1-v1_5",
+      hash: "SHA-256",
+    },
+    true,
+    ["verify"]
+  );
+
+  const publicKeyJWK = await crypto.subtle.exportKey("jwk", publicKey);
+  const modulusBigInt = BigInt(
+    "0x" + Buffer.from(publicKeyJWK.n as string, "base64").toString("hex")
+  );
+
+  return modulusBigInt;
+}

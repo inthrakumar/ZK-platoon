@@ -1,11 +1,16 @@
-
 import * as ed25519 from '@noble/ed25519';
 import { sha512 } from '@noble/hashes/sha512';
 import { EphemeralKey, LocalStorageKeys } from '../../lib/types.js';
 import { bytesToBigInt,bigIntToBytes } from '../../lib/utils.js'; 
-import { Barretenberg, Fr } from "@aztec/bb.js";
+import { Barretenberg, Fr, ProofData } from "@aztec/bb.js";
 import { JWT_CIRCUIT_HELPER } from '../../hooks/useJwtproof.jsx';
-export async function handletoken(token:string,EphemeralKey:EphemeralKey,nonce:string){
+type TokenResponse = {
+  proof: any;
+  proofArgs: { keyId: any };
+  anonGroup: string;
+  publicInputs:any;
+} | undefined;
+export async function handletoken(token:string,EphemeralKey:EphemeralKey,nonce:string):Promise<TokenResponse>{
   try{
     const [headersB64, payloadB64] = token.split(".");
     const headers = JSON.parse(atob(headersB64));
@@ -13,7 +18,7 @@ export async function handletoken(token:string,EphemeralKey:EphemeralKey,nonce:s
     console.log(payload,nonce);
     if(payload.nonce !== nonce){
       alert(`Nonce does not match: ${payload.nonce} !== ${nonce}`);
-      return;
+      return undefined; // Explicitly return undefined in the catch block
     }
     const domain = payload.hd;
     const keyId = headers.kid;
@@ -26,15 +31,20 @@ export async function handletoken(token:string,EphemeralKey:EphemeralKey,nonce:s
           ephemeralKey: EphemeralKey,
           domain,
         });
-        console.log("proof",proof);}
+        console.log("proof",proof);
+        const anonGroup=domain;
+        const proofArgs = {keyId,}
+        return { proof:proof.proof, proofArgs, anonGroup ,publicInputs:proof.publicInputs};
+      }
         catch(error){
           console.log(error);
+          return undefined; // Explicitly return undefined in the catch block
         }
   }
 
   export async function fetchGooglePublicKey(keyId: string) {
     if (!keyId) {
-      return null;
+      return undefined; // Explicitly return undefined in the catch block
     }
   
     const response = await fetch("https://www.googleapis.com/oauth2/v3/certs");
