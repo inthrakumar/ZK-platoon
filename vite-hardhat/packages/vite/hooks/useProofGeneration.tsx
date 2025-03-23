@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
-import { getCircuit, getJWTCircuit } from '../../noir/compile.js';
+import { getCircuit } from '../../noir/compile.js';
 import { UltraPlonkBackend } from '@aztec/bb.js';
 import { Noir } from '@noir-lang/noir_js';
 import { ProofData } from '@noir-lang/types';
@@ -14,8 +14,6 @@ export function useProofGeneration(inputs?: Props) {
   const proofGeneration = async () => {
     if (!inputs) return;
     const circuit = await getCircuit();
-    const jwtCircuit = await getJWTCircuit();
-    console.log(jwtCircuit);
     const backend = new UltraPlonkBackend(circuit.bytecode, {
       threads: navigator.hardwareConcurrency,
     });
